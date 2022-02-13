@@ -1,0 +1,7 @@
+version: '2'
+services:
+  aws-mysql:
+    extends:
+      file: mysql.yml
+      service: aws-mysql
+    container_name: aws-mysql
