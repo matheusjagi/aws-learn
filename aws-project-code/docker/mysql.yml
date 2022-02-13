@@ -1,0 +1,9 @@
+version: '2'
+services:
+  aws-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "aws-learn"
+    ports:
+      - 3306:3306
