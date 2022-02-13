@@ -1,0 +1,19 @@
+{
+  "version": "16.0.0",
+  "files": {
+    "5b25a7ae7365dd279408ef56a967ae1f25c67484f66edb7bfb3c0cd3ecd85c40": {
+      "source": {
+        "path": "Vpc.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "5b25a7ae7365dd279408ef56a967ae1f25c67484f66edb7bfb3c0cd3ecd85c40.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
