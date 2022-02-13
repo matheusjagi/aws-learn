@@ -60,8 +60,11 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.2'
 	compileOnly group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.0'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 tasks.named('test') {
+	scanForTestClasses = false
+	include "**/*Test.class"
 	useJUnitPlatform()
 }
