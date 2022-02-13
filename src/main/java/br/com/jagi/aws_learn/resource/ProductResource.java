@@ -36,7 +36,7 @@ public class ProductResource {
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<Product> findById(@PathVariable("code") String code) {
+    public ResponseEntity<Product> findByCode(@PathVariable("code") String code) {
         return new ResponseEntity<>(productService.findByCode(code), HttpStatus.OK);
     }
 

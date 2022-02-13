@@ -37,15 +37,18 @@ public class ProductService {
     }
 
     public Product update(Product product) {
-        if (!productRepository.existsById(product.getId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
-
+        existsIdException(product.getId());
         return productRepository.save(product);
     }
 
     public void delete(Long id) {
-        findById(id);
+        existsIdException(id);
         productRepository.deleteById(id);
+    }
+
+    private void existsIdException(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
     }
 }
