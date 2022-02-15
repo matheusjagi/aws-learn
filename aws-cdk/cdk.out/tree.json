@@ -9,7 +9,7 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.60"
+          "version": "10.0.62"
         }
       },
       "Vpc": {
@@ -546,7 +546,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
             }
           },
           "Exports": {
@@ -588,7 +588,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
             }
           }
         },
@@ -648,7 +648,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
             }
           },
           "Exports": {
@@ -666,7 +666,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
             }
           }
         },
@@ -833,7 +833,113 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.12.0"
+        }
+      },
+      "Sns": {
+        "id": "Sns",
+        "path": "Sns",
+        "children": {
+          "ProductEventsTopic": {
+            "id": "ProductEventsTopic",
+            "path": "Sns/ProductEventsTopic",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Sns/ProductEventsTopic/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                  "aws:cdk:cloudformation:props": {
+                    "topicName": "product-events"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                  "version": "2.12.0"
+                }
+              },
+              "jagi.matheus@gmail.com": {
+                "id": "jagi.matheus@gmail.com",
+                "path": "Sns/ProductEventsTopic/jagi.matheus@gmail.com",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Sns/ProductEventsTopic/jagi.matheus@gmail.com/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                      "aws:cdk:cloudformation:props": {
+                        "protocol": "email-json",
+                        "topicArn": {
+                          "Ref": "ProductEventsTopic2164919A"
+                        },
+                        "endpoint": "jagi.matheus@gmail.com"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Subscription",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Topic",
+              "version": "2.12.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "Sns/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "Sns/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.12.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "Sns/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.62"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "Sns/Exports",
+            "children": {
+              "Output{\"Ref\":\"ProductEventsTopic2164919A\"}": {
+                "id": "Output{\"Ref\":\"ProductEventsTopic2164919A\"}",
+                "path": "Sns/Exports/Output{\"Ref\":\"ProductEventsTopic2164919A\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.62"
             }
           }
         },
@@ -1111,6 +1217,47 @@
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
                           "version": "2.12.0"
                         }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "Service01/ALB01/TaskDef/TaskRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Service01/ALB01/TaskDef/TaskRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "sns:Publish",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "ALB01TaskDefTaskRoleDefaultPolicy2F92956B",
+                                "roles": [
+                                  {
+                                    "Ref": "ALB01TaskDefTaskRole9240B125"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.12.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.12.0"
+                        }
                       }
                     },
                     "constructInfo": {
@@ -1127,8 +1274,8 @@
                         "containerDefinitions": [
                           {
                             "essential": true,
-                            "image": "matheusjagi/aws-learn:1.5.0",
-                            "name": "aws-learn",
+                            "image": "matheusjagi/aws-learn:1.10.0",
+                            "name": "aws-learn-container",
                             "portMappings": [
                               {
                                 "containerPort": 8080,
@@ -1148,6 +1295,10 @@
                               }
                             },
                             "environment": [
+                              {
+                                "name": "AWS_REGION",
+                                "value": "us-east-1"
+                              },
                               {
                                 "name": "SPRING_DATASOURCE_URL",
                                 "value": {
@@ -1172,6 +1323,12 @@
                               {
                                 "name": "SPRING_DATASOURCE_USERNAME",
                                 "value": "admin"
+                              },
+                              {
+                                "name": "AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN",
+                                "value": {
+                                  "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
+                                }
                               }
                             ]
                           }
@@ -1202,9 +1359,9 @@
                       "version": "2.12.0"
                     }
                   },
-                  "aws-learn": {
-                    "id": "aws-learn",
-                    "path": "Service01/ALB01/TaskDef/aws-learn",
+                  "aws-learn-container": {
+                    "id": "aws-learn-container",
+                    "path": "Service01/ALB01/TaskDef/aws-learn-container",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ecs.ContainerDefinition",
                       "version": "2.12.0"
@@ -1324,7 +1481,7 @@
                             "targetGroupArn": {
                               "Ref": "ALB01LBPublicListenerECSGroup8E5F9C1A"
                             },
-                            "containerName": "aws-learn",
+                            "containerName": "aws-learn-container",
                             "containerPort": 8080
                           }
                         ],
@@ -1490,17 +1647,17 @@
                               "version": "2.12.0"
                             }
                           },
-                          "Service01AutoScalling": {
-                            "id": "Service01AutoScalling",
-                            "path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScalling",
+                          "Service01AutoScaling": {
+                            "id": "Service01AutoScaling",
+                            "path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScaling",
                             "children": {
                               "Resource": {
                                 "id": "Resource",
-                                "path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScalling/Resource",
+                                "path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScaling/Resource",
                                 "attributes": {
                                   "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
                                   "aws:cdk:cloudformation:props": {
-                                    "policyName": "Service01ALB01ServiceTaskCountTargetService01AutoScalling2CF423E7",
+                                    "policyName": "Service01ALB01ServiceTaskCountTargetService01AutoScaling6BCC5EFF",
                                     "policyType": "TargetTrackingScaling",
                                     "scalingTargetId": {
                                       "Ref": "ALB01ServiceTaskCountTarget4149107A"
@@ -1573,7 +1730,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.60"
+              "version": "10.0.62"
             }
           }
         },

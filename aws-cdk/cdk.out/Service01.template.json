@@ -155,12 +155,42 @@
         "aws:cdk:path": "Service01/ALB01/TaskDef/TaskRole/Resource"
       }
     },
+    "ALB01TaskDefTaskRoleDefaultPolicy2F92956B": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ALB01TaskDefTaskRoleDefaultPolicy2F92956B",
+        "Roles": [
+          {
+            "Ref": "ALB01TaskDefTaskRole9240B125"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Service01/ALB01/TaskDef/TaskRole/DefaultPolicy/Resource"
+      }
+    },
     "ALB01TaskDef2A307EF6": {
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
         "ContainerDefinitions": [
           {
             "Environment": [
+              {
+                "Name": "AWS_REGION",
+                "Value": "us-east-1"
+              },
               {
                 "Name": "SPRING_DATASOURCE_URL",
                 "Value": {
@@ -185,10 +215,16 @@
               {
                 "Name": "SPRING_DATASOURCE_USERNAME",
                 "Value": "admin"
+              },
+              {
+                "Name": "AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN",
+                "Value": {
+                  "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
+                }
               }
             ],
             "Essential": true,
-            "Image": "matheusjagi/aws-learn:1.5.0",
+            "Image": "matheusjagi/aws-learn:1.10.0",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -201,7 +237,7 @@
                 }
               }
             },
-            "Name": "aws-learn",
+            "Name": "aws-learn-container",
             "PortMappings": [
               {
                 "ContainerPort": 8080,
@@ -302,7 +338,7 @@
         "LaunchType": "FARGATE",
         "LoadBalancers": [
           {
-            "ContainerName": "aws-learn",
+            "ContainerName": "aws-learn-container",
             "ContainerPort": 8080,
             "TargetGroupArn": {
               "Ref": "ALB01LBPublicListenerECSGroup8E5F9C1A"
@@ -432,10 +468,10 @@
         "aws:cdk:path": "Service01/ALB01/Service/TaskCount/Target/Resource"
       }
     },
-    "ALB01ServiceTaskCountTargetService01AutoScallingF38BC71E": {
+    "ALB01ServiceTaskCountTargetService01AutoScalingAD2F8C72": {
       "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
       "Properties": {
-        "PolicyName": "Service01ALB01ServiceTaskCountTargetService01AutoScalling2CF423E7",
+        "PolicyName": "Service01ALB01ServiceTaskCountTargetService01AutoScaling6BCC5EFF",
         "PolicyType": "TargetTrackingScaling",
         "ScalingTargetId": {
           "Ref": "ALB01ServiceTaskCountTarget4149107A"
@@ -450,7 +486,7 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScalling/Resource"
+        "aws:cdk:path": "Service01/ALB01/Service/TaskCount/Target/Service01AutoScaling/Resource"
       }
     },
     "CDKMetadata": {
