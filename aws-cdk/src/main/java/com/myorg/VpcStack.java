@@ -7,7 +7,7 @@ import software.constructs.Construct;
 
 public class VpcStack extends Stack {
 
-    private Vpc vpc;
+    private final Vpc vpc;
 
     public VpcStack(final Construct scope, final String id) {
         this(scope, id, null);

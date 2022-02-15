@@ -1,6 +1,7 @@
 package br.com.jagi.aws_learn.service;
 
 import br.com.jagi.aws_learn.model.Product;
+import br.com.jagi.aws_learn.model.enums.EventType;
 import br.com.jagi.aws_learn.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductPublisher productPublisher;
 
     public List<Product> findAll() {
         return productRepository.findAll();
@@ -32,17 +34,23 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-        return productRepository.save(product);
+        Product productCreated = productRepository.save(product);
+        productPublisher.publishProductEvent(productCreated, EventType.PRODUCT_CREATED, "Jagi");
+        return productCreated;
     }
 
     public Product update(Product product) {
         existsIdException(product.getId());
-        return productRepository.save(product);
+        Product productUpdated = productRepository.save(product);
+        productPublisher.publishProductEvent(productUpdated, EventType.PRODUCT_UPDATE, "Iara");
+        return productUpdated;
     }
 
     public void delete(Long id) {
         existsIdException(id);
+        Product productDeleted = findById(id);
         productRepository.deleteById(id);
+        productPublisher.publishProductEvent(productDeleted, EventType.PRODUCT_DELETED, "Kimura");
     }
 
     private void existsIdException(Long id) {

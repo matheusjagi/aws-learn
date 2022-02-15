@@ -16,6 +16,7 @@ import software.amazon.awscdk.services.ecs.ScalableTaskCount;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
 import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
+import software.amazon.awscdk.services.events.targets.SnsTopic;
 import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
@@ -24,12 +25,14 @@ import java.util.Map;
 
 public class Service01Stack extends Stack {
 
-    public Service01Stack(final Construct scope, final String id, Cluster cluster) {
-        this(scope, id, null, cluster);
+    public Service01Stack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic) {
+        this(scope, id, null, cluster, productEventsTopic);
     }
 
-    public Service01Stack(final Construct scope, final String id, final StackProps props, Cluster cluster) {
+    public Service01Stack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic) {
         super(scope, id, props);
+
+        Map<String, String> envVariables = getEnviromentVariables(productEventsTopic);
 
         ApplicationLoadBalancedFargateService service01 = ApplicationLoadBalancedFargateService.Builder.create(this, "ALB01")
                 .serviceName("service-01")
@@ -39,7 +42,7 @@ public class Service01Stack extends Stack {
                 .desiredCount(2)
                 .listenerPort(8080)
                 .assignPublicIp(true)
-                .taskImageOptions(getTaskImageOptions())
+                .taskImageOptions(getTaskImageOptions(envVariables))
                 .publicLoadBalancer(true)
                 .build();
 
@@ -55,25 +58,32 @@ public class Service01Stack extends Stack {
                 .maxCapacity(4)
                 .build());
 
-        scalableTaskCount.scaleOnCpuUtilization("Service01AutoScalling", CpuUtilizationScalingProps.builder()
+        scalableTaskCount.scaleOnCpuUtilization("Service01AutoScaling", CpuUtilizationScalingProps.builder()
                 .targetUtilizationPercent(50)
                 .scaleInCooldown(Duration.seconds(60))
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
+
+        //Dando permissão para o tópico na tarefa
+        productEventsTopic.getTopic().grantPublish(service01.getTaskDefinition().getTaskRole());
     }
 
-    @NotNull
-    private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions() {
-
+    private Map<String, String> getEnviromentVariables(SnsTopic productEventsTopic) {
         Map<String, String> envVariables = new HashMap<>();
         envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("rds-endpoint")
                 + ":3306/aws-learn?createDatabaseIfNotExist=true");
         envVariables.put("SPRING_DATASOURCE_USERNAME", "admin");
         envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
+        envVariables.put("AWS_REGION", "us-east-1");
+        envVariables.put("AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN", productEventsTopic.getTopic().getTopicArn());
+        return envVariables;
+    }
 
+    @NotNull
+    private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions(Map<String, String> envVariables) {
         return ApplicationLoadBalancedTaskImageOptions.builder()
-                .containerName("aws-learn")
-                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.5.0"))
+                .containerName("aws-learn-container")
+                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.10.0"))
                 .containerPort(8080)
                 .logDriver(getLogDriver())
                 .environment(envVariables)
