@@ -224,7 +224,7 @@
               }
             ],
             "Essential": true,
-            "Image": "matheusjagi/aws-learn:1.10.0",
+            "Image": "matheusjagi/aws-learn:1.5.8",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -237,7 +237,7 @@
                 }
               }
             },
-            "Name": "aws-learn-container",
+            "Name": "aws-learn",
             "PortMappings": [
               {
                 "ContainerPort": 8080,
@@ -338,7 +338,7 @@
         "LaunchType": "FARGATE",
         "LoadBalancers": [
           {
-            "ContainerName": "aws-learn-container",
+            "ContainerName": "aws-learn",
             "ContainerPort": 8080,
             "TargetGroupArn": {
               "Ref": "ALB01LBPublicListenerECSGroup8E5F9C1A"

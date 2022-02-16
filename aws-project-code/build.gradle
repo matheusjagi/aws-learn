@@ -27,7 +27,7 @@ sourceCompatibility = '17'
 
 bootJar {
 	baseName = 'aws-learn'
-	version = '1.10.0'
+	version = '1.5.9'
 }
 
 task unpack(type: Copy) {
@@ -62,7 +62,7 @@ dependencies {
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
-	compileOnly group: "com.amazonaws", name: "aws-java-sdk-sns", version: '1.11.887'
+	implementation 'com.amazonaws:aws-java-sdk-sns:1.12.154'
 }
 
 tasks.named('test') {
