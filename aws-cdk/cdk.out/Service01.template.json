@@ -224,7 +224,7 @@
               }
             ],
             "Essential": true,
-            "Image": "matheusjagi/aws-learn:1.5.8",
+            "Image": "matheusjagi/aws-learn:1.7.0",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -237,7 +237,7 @@
                 }
               }
             },
-            "Name": "aws-learn",
+            "Name": "aws_learn01",
             "PortMappings": [
               {
                 "ContainerPort": 8080,
@@ -246,7 +246,7 @@
             ]
           }
         ],
-        "Cpu": "512",
+        "Cpu": "256",
         "ExecutionRoleArn": {
           "Fn::GetAtt": [
             "ALB01TaskDefExecutionRoleD625C6B3",
@@ -254,7 +254,7 @@
           ]
         },
         "Family": "Service01ALB01TaskDef0992352B",
-        "Memory": "1024",
+        "Memory": "512",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
           "FARGATE"
@@ -338,7 +338,7 @@
         "LaunchType": "FARGATE",
         "LoadBalancers": [
           {
-            "ContainerName": "aws-learn",
+            "ContainerName": "aws_learn01",
             "ContainerPort": 8080,
             "TargetGroupArn": {
               "Ref": "ALB01LBPublicListenerECSGroup8E5F9C1A"

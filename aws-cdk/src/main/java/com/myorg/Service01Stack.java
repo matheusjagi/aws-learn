@@ -37,8 +37,8 @@ public class Service01Stack extends Stack {
         ApplicationLoadBalancedFargateService service01 = ApplicationLoadBalancedFargateService.Builder.create(this, "ALB01")
                 .serviceName("service-01")
                 .cluster(cluster)
-                .cpu(512)
-                .memoryLimitMiB(1024)
+                .cpu(256)
+                .memoryLimitMiB(512)
                 .desiredCount(2)
                 .listenerPort(8080)
                 .assignPublicIp(true)
@@ -82,8 +82,8 @@ public class Service01Stack extends Stack {
     @NotNull
     private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions(Map<String, String> envVariables) {
         return ApplicationLoadBalancedTaskImageOptions.builder()
-                .containerName("aws-learn")
-                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.5.8"))
+                .containerName("aws_learn01")
+                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.7.0"))
                 .containerPort(8080)
                 .logDriver(getLogDriver())
                 .environment(envVariables)
