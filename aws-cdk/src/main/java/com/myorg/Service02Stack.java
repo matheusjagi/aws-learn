@@ -2,7 +2,6 @@ package com.myorg;
 
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Fn;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -18,73 +17,94 @@ import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskI
 import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.events.targets.SnsTopic;
 import software.amazon.awscdk.services.logs.LogGroup;
+import software.amazon.awscdk.services.sns.subscriptions.SqsSubscription;
+import software.amazon.awscdk.services.sqs.DeadLetterQueue;
+import software.amazon.awscdk.services.sqs.Queue;
 import software.constructs.Construct;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Service01Stack extends Stack {
+public class Service02Stack extends Stack {
 
-    public Service01Stack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic) {
+    public Service02Stack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic) {
         this(scope, id, null, cluster, productEventsTopic);
     }
 
-    public Service01Stack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic) {
+    public Service02Stack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic) {
         super(scope, id, props);
 
-        Map<String, String> envVariables = getEnviromentVariables(productEventsTopic);
+        Queue productEventsQueue = createdProductEventsQueueAndDlq();
 
-        ApplicationLoadBalancedFargateService service01 = ApplicationLoadBalancedFargateService.Builder.create(this, "ALB01")
-                .serviceName("service-01")
+        //Inscreve a fila criada no topico
+        SqsSubscription sqsSubscription = SqsSubscription.Builder.create(productEventsQueue).build();
+        productEventsTopic.getTopic().addSubscription(sqsSubscription);
+
+        Map<String, String> envVariables = getEnviromentVariables(productEventsQueue);
+
+        ApplicationLoadBalancedFargateService service02 = ApplicationLoadBalancedFargateService.Builder.create(this, "ALB02")
+                .serviceName("service-02")
                 .cluster(cluster)
                 .cpu(256)
                 .memoryLimitMiB(512)
                 .desiredCount(2)
-                .listenerPort(8080)
+                .listenerPort(9090)
                 .assignPublicIp(true)
                 .taskImageOptions(getTaskImageOptions(envVariables))
                 .publicLoadBalancer(true)
                 .build();
 
-        service01.getTargetGroup().configureHealthCheck(HealthCheck.builder()
+        service02.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("8080")
+                .port("9090")
                 .healthyHttpCodes("200")
                 .build());
 
         //Configuração do Auto Scalling
-        ScalableTaskCount scalableTaskCount = service01.getService().autoScaleTaskCount(EnableScalingProps.builder()
+        ScalableTaskCount scalableTaskCount = service02.getService().autoScaleTaskCount(EnableScalingProps.builder()
                 .minCapacity(2)
                 .maxCapacity(4)
                 .build());
 
-        scalableTaskCount.scaleOnCpuUtilization("Service01AutoScaling", CpuUtilizationScalingProps.builder()
+        scalableTaskCount.scaleOnCpuUtilization("Service02AutoScaling", CpuUtilizationScalingProps.builder()
                 .targetUtilizationPercent(50)
                 .scaleInCooldown(Duration.seconds(60))
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
-
-        //Dando permissão para o tópico na tarefa
-        productEventsTopic.getTopic().grantPublish(service01.getTaskDefinition().getTaskRole());
     }
 
-    private Map<String, String> getEnviromentVariables(SnsTopic productEventsTopic) {
+    @NotNull
+    private Queue createdProductEventsQueueAndDlq() {
+        Queue productEventsDlq = Queue.Builder.create(this, "ProductEventsDlq")
+                .queueName("product-events-dlq")
+                .build();
+
+        DeadLetterQueue deadLetterQueued = DeadLetterQueue.builder()
+                .queue(productEventsDlq)
+                .maxReceiveCount(3)
+                .build();
+
+        Queue productEventsQueue = Queue.Builder.create(this, "ProductEvents")
+                .queueName("product-events")
+                .deadLetterQueue(deadLetterQueued)
+                .build();
+
+        return productEventsQueue;
+    }
+
+    private Map<String, String> getEnviromentVariables(Queue productEventsQueue) {
         Map<String, String> envVariables = new HashMap<>();
-        envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("rds-endpoint")
-                + ":3306/aws-learn?createDatabaseIfNotExist=true");
-        envVariables.put("SPRING_DATASOURCE_USERNAME", "admin");
-        envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
         envVariables.put("AWS_REGION", "us-east-1");
-        envVariables.put("AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN", productEventsTopic.getTopic().getTopicArn());
+        envVariables.put("AWS_SQS_QUEUE_PRODUCT_EVENTS_NAME", productEventsQueue.getQueueName());
         return envVariables;
     }
 
     @NotNull
     private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions(Map<String, String> envVariables) {
         return ApplicationLoadBalancedTaskImageOptions.builder()
-                .containerName("aws_learn01")
-                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.7.0"))
-                .containerPort(8080)
+                .containerName("aws_learn02")
+                .image(ContainerImage.fromRegistry("matheusjagi/aws_learn_consumer:1.2.0"))
+                .containerPort(9090)
                 .logDriver(getLogDriver())
                 .environment(envVariables)
                 .build();
@@ -94,14 +114,14 @@ public class Service01Stack extends Stack {
     private LogDriver getLogDriver() {
         return LogDriver.awsLogs(AwsLogDriverProps.builder()
                 .logGroup(getLogGroup())
-                .streamPrefix("Service01")
+                .streamPrefix("Service02")
                 .build());
     }
 
     @NotNull
     private LogGroup getLogGroup() {
-        return LogGroup.Builder.create(this, "Service01LogGroup")
-                .logGroupName("Service01")
+        return LogGroup.Builder.create(this, "Service02LogGroup")
+                .logGroupName("Service02")
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
     }
