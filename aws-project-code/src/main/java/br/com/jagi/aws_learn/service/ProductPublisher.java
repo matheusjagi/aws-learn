@@ -5,6 +5,7 @@ import br.com.jagi.aws_learn.model.Product;
 import br.com.jagi.aws_learn.model.ProductEvent;
 import br.com.jagi.aws_learn.model.enums.EventTypeEnum;
 import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.model.PublishResult;
 import com.amazonaws.services.sns.model.Topic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +28,17 @@ public class ProductPublisher {
         Envelope envelope = new Envelope(eventType);
         envelope.setData(objectMapper.writeValueAsString(productEvent));
 
-        snsClient.publish(productEventsTopic.getTopicArn(), objectMapper.writeValueAsString(envelope));
+        PublishResult publishResult = snsClient.publish(
+                productEventsTopic.getTopicArn(),
+                objectMapper.writeValueAsString(envelope));
+
+        log.info("[SERVICE01] - Identificador da mensagem publicada: {}", publishResult.getMessageId());
     }
 
     private ProductEvent createProductEvent(Product product, String username) {
         ProductEvent productEvent = new ProductEvent();
         productEvent.setProductId(product.getId());
-        productEvent.setCode(productEvent.getCode());
+        productEvent.setCode(product.getCode());
         productEvent.setUsername(username);
         return productEvent;
     }

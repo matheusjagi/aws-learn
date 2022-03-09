@@ -5,4 +5,5 @@ com/myorg/Service02Stack.class
 com/myorg/CursoAwsCdkApp.class
 com/myorg/ClusterStack.class
 com/myorg/VpcStack.class
+com/myorg/DynamodbStack.class
 com/myorg/SnsStack.class

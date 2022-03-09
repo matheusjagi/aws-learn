@@ -6,6 +6,7 @@ import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
+import software.amazon.awscdk.services.dynamodb.Table;
 import software.amazon.awscdk.services.ecs.AwsLogDriverProps;
 import software.amazon.awscdk.services.ecs.Cluster;
 import software.amazon.awscdk.services.ecs.ContainerImage;
@@ -27,11 +28,11 @@ import java.util.Map;
 
 public class Service02Stack extends Stack {
 
-    public Service02Stack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic) {
-        this(scope, id, null, cluster, productEventsTopic);
+    public Service02Stack(final Construct scope, final String id, Cluster cluster, SnsTopic productEventsTopic, Table productEventsDynamodb) {
+        this(scope, id, null, cluster, productEventsTopic, productEventsDynamodb);
     }
 
-    public Service02Stack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic) {
+    public Service02Stack(final Construct scope, final String id, final StackProps props, Cluster cluster, SnsTopic productEventsTopic, Table productEventsDynamodb) {
         super(scope, id, props);
 
         Queue productEventsQueue = createdProductEventsQueueAndDlq();
@@ -62,8 +63,8 @@ public class Service02Stack extends Stack {
 
         //Configuração do Auto Scalling
         ScalableTaskCount scalableTaskCount = service02.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(2)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("Service02AutoScaling", CpuUtilizationScalingProps.builder()
@@ -71,6 +72,11 @@ public class Service02Stack extends Stack {
                 .scaleInCooldown(Duration.seconds(60))
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
+
+        //Criação da permissão para consumo de mensagens da fila
+        productEventsQueue.grantConsumeMessages(service02.getTaskDefinition().getTaskRole());
+        //Criação da permissão para o DynamoDB
+        productEventsDynamodb.grantReadWriteData(service02.getTaskDefinition().getTaskRole());
     }
 
     @NotNull
@@ -103,7 +109,7 @@ public class Service02Stack extends Stack {
     private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions(Map<String, String> envVariables) {
         return ApplicationLoadBalancedTaskImageOptions.builder()
                 .containerName("aws_learn02")
-                .image(ContainerImage.fromRegistry("matheusjagi/aws_learn_consumer:1.2.0"))
+                .image(ContainerImage.fromRegistry("matheusjagi/aws_learn_consumer:1.3.0"))
                 .containerPort(9090)
                 .logDriver(getLogDriver())
                 .environment(envVariables)

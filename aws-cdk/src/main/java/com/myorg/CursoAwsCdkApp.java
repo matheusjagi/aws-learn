@@ -16,14 +16,19 @@ public class CursoAwsCdkApp {
 
         SnsStack snsStack = new SnsStack(app, "Sns");
 
-        Service01Stack service01Stack = new Service01Stack(app, "Service01", clusterStack.getCluster(), snsStack.getProductEventsTopic());
+        Service01Stack service01Stack = new Service01Stack(app, "Service01",
+                clusterStack.getCluster(), snsStack.getProductEventsTopic());
         service01Stack.addDependency(clusterStack);
         service01Stack.addDependency(rdsStack);
         service01Stack.addDependency(snsStack);
 
-        Service02Stack service02Stack = new Service02Stack(app, "Service02", clusterStack.getCluster(), snsStack.getProductEventsTopic());
+        DynamodbStack dynamodbStack = new DynamodbStack(app, "Dynamodb");
+
+        Service02Stack service02Stack = new Service02Stack(app, "Service02",
+                clusterStack.getCluster(), snsStack.getProductEventsTopic(), dynamodbStack.getProductEventsDynammdb());
         service02Stack.addDependency(clusterStack);
         service02Stack.addDependency(snsStack);
+        service02Stack.addDependency(dynamodbStack);
 
         app.synth();
     }
