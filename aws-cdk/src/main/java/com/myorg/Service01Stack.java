@@ -54,8 +54,8 @@ public class Service01Stack extends Stack {
 
         //Configuração do Auto Scalling
         ScalableTaskCount scalableTaskCount = service01.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(2)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("Service01AutoScaling", CpuUtilizationScalingProps.builder()
@@ -83,7 +83,7 @@ public class Service01Stack extends Stack {
     private ApplicationLoadBalancedTaskImageOptions getTaskImageOptions(Map<String, String> envVariables) {
         return ApplicationLoadBalancedTaskImageOptions.builder()
                 .containerName("aws_learn01")
-                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.7.0"))
+                .image(ContainerImage.fromRegistry("matheusjagi/aws-learn:1.8.0"))
                 .containerPort(8080)
                 .logDriver(getLogDriver())
                 .environment(envVariables)

@@ -453,7 +453,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a2607bd7eab217bd728fbbbbbf3f6cb3dbcc326abe2c05b68a2c00e3acce3373.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/69fac0cf24dbcd5cf9f36ac76eeb0f8a47fd9cb66958d02d3c58959f99c58315.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -608,6 +608,85 @@
       },
       "displayName": "Service01"
     },
+    "Dynamodb.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Dynamodb.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Dynamodb": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Dynamodb.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/02e9ea45e27ae60a19ffb0ec3ce00dd23bd0bbc850ac6f59bf0a732f784e45f4.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Dynamodb.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "Dynamodb.assets"
+      ],
+      "metadata": {
+        "/Dynamodb/ProductEventsDynamodb": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "ProductEventsDynamodbF063E04E"
+            }
+          }
+        ],
+        "/Dynamodb/ProductEventsDynamodb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductEventsDynamodbF063E04E"
+          }
+        ],
+        "/Dynamodb/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Dynamodb/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Dynamodb/Exports/Output{\"Fn::GetAtt\":[\"ProductEventsDynamodbF063E04E\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttProductEventsDynamodbF063E04EArn356B9D81"
+          }
+        ],
+        "/Dynamodb/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Dynamodb/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Dynamodb"
+    },
     "Service02.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
@@ -624,7 +703,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/67dff5cfa9280b27edbf8b3d5e1ddd14b8737d5706d04bb2118b7582b7db68e0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8404a0dd8062b25899329ac5239ad2546536e7dc4aa434f91b0da942dad3db97.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -639,6 +718,7 @@
       "dependencies": [
         "Sns",
         "Cluster",
+        "Dynamodb",
         "Vpc",
         "Service02.assets"
       ],
@@ -719,6 +799,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ALB02TaskDefTaskRoleA842BC02"
+          }
+        ],
+        "/Service02/ALB02/TaskDef/TaskRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALB02TaskDefTaskRoleDefaultPolicy74F34361"
           }
         ],
         "/Service02/ALB02/TaskDef/Resource": [

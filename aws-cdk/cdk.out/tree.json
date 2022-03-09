@@ -9,7 +9,7 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.67"
+          "version": "10.0.82"
         }
       },
       "Vpc": {
@@ -546,7 +546,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           },
           "Exports": {
@@ -588,7 +588,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           }
         },
@@ -648,7 +648,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           },
           "Exports": {
@@ -666,7 +666,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           }
         },
@@ -833,7 +833,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           }
         },
@@ -921,7 +921,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           },
           "Exports": {
@@ -939,7 +939,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           }
         },
@@ -1274,7 +1274,7 @@
                         "containerDefinitions": [
                           {
                             "essential": true,
-                            "image": "matheusjagi/aws-learn:1.7.0",
+                            "image": "matheusjagi/aws-learn:1.8.0",
                             "name": "aws_learn01",
                             "portMappings": [
                               {
@@ -1602,8 +1602,8 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
                               "aws:cdk:cloudformation:props": {
-                                "maxCapacity": 4,
-                                "minCapacity": 2,
+                                "maxCapacity": 2,
+                                "minCapacity": 1,
                                 "resourceId": {
                                   "Fn::Join": [
                                     "",
@@ -1730,7 +1730,121 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.12.0"
+        }
+      },
+      "Dynamodb": {
+        "id": "Dynamodb",
+        "path": "Dynamodb",
+        "children": {
+          "ProductEventsDynamodb": {
+            "id": "ProductEventsDynamodb",
+            "path": "Dynamodb/ProductEventsDynamodb",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Dynamodb/ProductEventsDynamodb/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "pk",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "sk",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "pk",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "sk",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 1,
+                      "writeCapacityUnits": 1
+                    },
+                    "tableName": "product-events",
+                    "timeToLiveSpecification": {
+                      "attributeName": "ttl",
+                      "enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.12.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "Dynamodb/ProductEventsDynamodb/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.12.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "Dynamodb/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "Dynamodb/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.12.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "Dynamodb/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.82"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "Dynamodb/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"ProductEventsDynamodbF063E04E\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"ProductEventsDynamodbF063E04E\",\"Arn\"]}",
+                "path": "Dynamodb/Exports/Output{\"Fn::GetAtt\":[\"ProductEventsDynamodbF063E04E\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.82"
             }
           }
         },
@@ -2151,6 +2265,80 @@
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
                           "version": "2.12.0"
                         }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "Service02/ALB02/TaskDef/TaskRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Service02/ALB02/TaskDef/TaskRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "sqs:ReceiveMessage",
+                                        "sqs:ChangeMessageVisibility",
+                                        "sqs:GetQueueUrl",
+                                        "sqs:DeleteMessage",
+                                        "sqs:GetQueueAttributes"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "ProductEventsBB5A1CE1",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": [
+                                        "dynamodb:BatchGetItem",
+                                        "dynamodb:GetRecords",
+                                        "dynamodb:GetShardIterator",
+                                        "dynamodb:Query",
+                                        "dynamodb:GetItem",
+                                        "dynamodb:Scan",
+                                        "dynamodb:ConditionCheckItem",
+                                        "dynamodb:BatchWriteItem",
+                                        "dynamodb:PutItem",
+                                        "dynamodb:UpdateItem",
+                                        "dynamodb:DeleteItem"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::ImportValue": "Dynamodb:ExportsOutputFnGetAttProductEventsDynamodbF063E04EArn356B9D81"
+                                        },
+                                        {
+                                          "Ref": "AWS::NoValue"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "ALB02TaskDefTaskRoleDefaultPolicy74F34361",
+                                "roles": [
+                                  {
+                                    "Ref": "ALB02TaskDefTaskRoleA842BC02"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.12.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.12.0"
+                        }
                       }
                     },
                     "constructInfo": {
@@ -2167,7 +2355,7 @@
                         "containerDefinitions": [
                           {
                             "essential": true,
-                            "image": "matheusjagi/aws_learn_consumer:1.2.0",
+                            "image": "matheusjagi/aws_learn_consumer:1.3.0",
                             "name": "aws_learn02",
                             "portMappings": [
                               {
@@ -2473,8 +2661,8 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
                               "aws:cdk:cloudformation:props": {
-                                "maxCapacity": 4,
-                                "minCapacity": 2,
+                                "maxCapacity": 2,
+                                "minCapacity": 1,
                                 "resourceId": {
                                   "Fn::Join": [
                                     "",
@@ -2601,7 +2789,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.67"
+              "version": "10.0.82"
             }
           }
         },

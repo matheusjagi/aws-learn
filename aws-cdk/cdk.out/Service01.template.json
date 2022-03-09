@@ -224,7 +224,7 @@
               }
             ],
             "Essential": true,
-            "Image": "matheusjagi/aws-learn:1.7.0",
+            "Image": "matheusjagi/aws-learn:1.8.0",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -425,8 +425,8 @@
     "ALB01ServiceTaskCountTarget4149107A": {
       "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
       "Properties": {
-        "MaxCapacity": 4,
-        "MinCapacity": 2,
+        "MaxCapacity": 2,
+        "MinCapacity": 1,
         "ResourceId": {
           "Fn::Join": [
             "",
