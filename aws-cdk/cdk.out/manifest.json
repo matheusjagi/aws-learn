@@ -437,6 +437,155 @@
       },
       "displayName": "Sns"
     },
+    "InvoiceApp.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "InvoiceApp.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "InvoiceApp": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "InvoiceApp.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d90777d8b980b3bf53c4c2b3f2260f5b598b3626a409885d0ee3a25a890f76ae.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "InvoiceApp.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "InvoiceApp.assets"
+      ],
+      "metadata": {
+        "/InvoiceApp/S3InvoiceTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceTopicE47ADD91"
+          }
+        ],
+        "/InvoiceApp/S3InvoiceTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceTopicPolicy3275599F"
+          }
+        ],
+        "/InvoiceApp/S301/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S301B5E29875"
+          }
+        ],
+        "/InvoiceApp/S301/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S301Notifications7C3CCC30"
+          }
+        ],
+        "/InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/InvoiceApp/S3InvoiceDlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceDlq170A0FF1"
+          }
+        ],
+        "/InvoiceApp/S3InvoiceQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceQueueE519D3D7"
+          }
+        ],
+        "/InvoiceApp/S3InvoiceQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceQueuePolicy531A7D3D"
+          }
+        ],
+        "/InvoiceApp/S3InvoiceQueue/InvoiceAppS3InvoiceTopic46770DFB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3InvoiceQueueInvoiceAppS3InvoiceTopic46770DFB9A999209"
+          }
+        ],
+        "/InvoiceApp/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/InvoiceApp/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttS3InvoiceQueueE519D3D7Arn20AE8F4C"
+          }
+        ],
+        "/InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S301B5E29875\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttS301B5E29875Arn9BC58F18"
+          }
+        ],
+        "/InvoiceApp/Exports/Output{\"Ref\":\"S301B5E29875\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefS301B5E29875A20E1A8B"
+          }
+        ],
+        "/InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"QueueName\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttS3InvoiceQueueE519D3D7QueueName520A5A63"
+          }
+        ],
+        "/InvoiceApp/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/InvoiceApp/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "InvoiceApp"
+    },
     "Service01.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
@@ -453,7 +602,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/69fac0cf24dbcd5cf9f36ac76eeb0f8a47fd9cb66958d02d3c58959f99c58315.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7a3e4947237fab0d359ce51102102213a190998721fc5d0de78c6bde5d62dd08.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -469,6 +618,7 @@
         "Cluster",
         "Rds",
         "Sns",
+        "InvoiceApp",
         "Vpc",
         "Service01.assets"
       ],
@@ -624,7 +774,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/02e9ea45e27ae60a19ffb0ec3ce00dd23bd0bbc850ac6f59bf0a732f784e45f4.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/db3212a507b32b59723f6ae39b05c4c75549214a3da41e6a666a531630d58a4f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -652,6 +802,30 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductEventsDynamodbF063E04E"
+          }
+        ],
+        "/Dynamodb/ProductEventsDynamodb/ReadScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductEventsDynamodbReadScalingTargetAC6250F9"
+          }
+        ],
+        "/Dynamodb/ProductEventsDynamodb/ReadScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductEventsDynamodbReadScalingTargetTrackingA3D45F75"
+          }
+        ],
+        "/Dynamodb/ProductEventsDynamodb/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductEventsDynamodbWriteScalingTargetA1EA8FD4"
+          }
+        ],
+        "/Dynamodb/ProductEventsDynamodb/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductEventsDynamodbWriteScalingTargetTracking5DDD5D04"
           }
         ],
         "/Dynamodb/CDKMetadata/Default": [
@@ -703,7 +877,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8404a0dd8062b25899329ac5239ad2546536e7dc4aa434f91b0da942dad3db97.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0d9706775a20a50555d840429d8fe4950d51980ef3b1a9b7241e170e8f5919da.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [

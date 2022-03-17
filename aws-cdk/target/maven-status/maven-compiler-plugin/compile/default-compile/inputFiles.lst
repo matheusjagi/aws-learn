@@ -6,3 +6,4 @@
 /home/basis/Documentos/projetos/aws-learn/aws-cdk/src/main/java/com/myorg/SnsStack.java
 /home/basis/Documentos/projetos/aws-learn/aws-cdk/src/main/java/com/myorg/Service01Stack.java
 /home/basis/Documentos/projetos/aws-learn/aws-cdk/src/main/java/com/myorg/RdsStack.java
+/home/basis/Documentos/projetos/aws-learn/aws-cdk/src/main/java/com/myorg/DynamodbStack.java

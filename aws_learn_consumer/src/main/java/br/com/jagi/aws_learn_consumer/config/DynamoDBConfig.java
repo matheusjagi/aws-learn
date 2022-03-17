@@ -20,7 +20,6 @@ public class DynamoDBConfig {
     @Value("${aws.region}")
     private String awsRegion;
 
-
     @Bean
     @Primary
     public DynamoDBMapperConfig dynamoDBMapperConfig() {

@@ -27,7 +27,7 @@ sourceCompatibility = '17'
 
 bootJar {
 	baseName = 'aws-learn'
-	version = '1.8.0'
+	version = '1.9.0'
 }
 
 task unpack(type: Copy) {
@@ -63,6 +63,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
 	implementation 'com.amazonaws:aws-java-sdk-sns:1.12.154'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.154'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.12.146'
+	implementation group: 'org.springframework', name: 'spring-jms', version: '5.3.15'
+	implementation group: 'com.amazonaws', name: 'amazon-sqs-java-messaging-lib', version: '1.0.8'
 }
 
 tasks.named('test') {

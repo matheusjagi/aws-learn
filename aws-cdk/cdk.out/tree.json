@@ -9,7 +9,7 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.82"
+          "version": "10.0.90"
         }
       },
       "Vpc": {
@@ -546,7 +546,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           },
           "Exports": {
@@ -588,7 +588,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
@@ -648,7 +648,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           },
           "Exports": {
@@ -666,7 +666,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
@@ -833,7 +833,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
@@ -921,7 +921,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           },
           "Exports": {
@@ -939,7 +939,454 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.12.0"
+        }
+      },
+      "InvoiceApp": {
+        "id": "InvoiceApp",
+        "path": "InvoiceApp",
+        "children": {
+          "S3InvoiceTopic": {
+            "id": "S3InvoiceTopic",
+            "path": "InvoiceApp/S3InvoiceTopic",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InvoiceApp/S3InvoiceTopic/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                  "aws:cdk:cloudformation:props": {
+                    "topicName": "s3-invoice-topic"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                  "version": "2.12.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "InvoiceApp/S3InvoiceTopic/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InvoiceApp/S3InvoiceTopic/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::TopicPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sns:Publish",
+                              "Condition": {
+                                "ArnLike": {
+                                  "aws:SourceArn": {
+                                    "Fn::GetAtt": [
+                                      "S301B5E29875",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "s3.amazonaws.com"
+                              },
+                              "Resource": {
+                                "Ref": "S3InvoiceTopicE47ADD91"
+                              },
+                              "Sid": "0"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "topics": [
+                          {
+                            "Ref": "S3InvoiceTopicE47ADD91"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Topic",
+              "version": "2.12.0"
+            }
+          },
+          "S301": {
+            "id": "S301",
+            "path": "InvoiceApp/S301",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InvoiceApp/S301/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "pcs01-invoice"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.12.0"
+                }
+              },
+              "Notifications": {
+                "id": "Notifications",
+                "path": "InvoiceApp/S301/Notifications",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InvoiceApp/S301/Notifications/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.0.90"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.12.0"
+            }
+          },
+          "BucketNotificationsHandler050a0587b7544547bf325f094a3db834": {
+            "id": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834",
+            "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.12.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:PutBucketNotification",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+                            "roles": [
+                              {
+                                "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.12.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.12.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InvoiceApp/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.90"
+            }
+          },
+          "S3InvoiceDlq": {
+            "id": "S3InvoiceDlq",
+            "path": "InvoiceApp/S3InvoiceDlq",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InvoiceApp/S3InvoiceDlq/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "queueName": "s3-invoice-events-dlq"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.12.0"
+            }
+          },
+          "S3InvoiceQueue": {
+            "id": "S3InvoiceQueue",
+            "path": "InvoiceApp/S3InvoiceQueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InvoiceApp/S3InvoiceQueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "queueName": "s3-invoice-events",
+                    "redrivePolicy": {
+                      "deadLetterTargetArn": {
+                        "Fn::GetAtt": [
+                          "S3InvoiceDlq170A0FF1",
+                          "Arn"
+                        ]
+                      },
+                      "maxReceiveCount": 3
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.12.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "InvoiceApp/S3InvoiceQueue/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InvoiceApp/S3InvoiceQueue/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sqs:SendMessage",
+                              "Condition": {
+                                "ArnEquals": {
+                                  "aws:SourceArn": {
+                                    "Ref": "S3InvoiceTopicE47ADD91"
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "sns.amazonaws.com"
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "S3InvoiceQueueE519D3D7",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "queues": [
+                          {
+                            "Ref": "S3InvoiceQueueE519D3D7"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                  "version": "2.12.0"
+                }
+              },
+              "InvoiceAppS3InvoiceTopic46770DFB": {
+                "id": "InvoiceAppS3InvoiceTopic46770DFB",
+                "path": "InvoiceApp/S3InvoiceQueue/InvoiceAppS3InvoiceTopic46770DFB",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InvoiceApp/S3InvoiceQueue/InvoiceAppS3InvoiceTopic46770DFB/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                      "aws:cdk:cloudformation:props": {
+                        "protocol": "sqs",
+                        "topicArn": {
+                          "Ref": "S3InvoiceTopicE47ADD91"
+                        },
+                        "endpoint": {
+                          "Fn::GetAtt": [
+                            "S3InvoiceQueueE519D3D7",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Subscription",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.12.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "InvoiceApp/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "InvoiceApp/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.12.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "InvoiceApp/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.90"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "InvoiceApp/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"Arn\"]}",
+                "path": "InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"S301B5E29875\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"S301B5E29875\",\"Arn\"]}",
+                "path": "InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S301B5E29875\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              },
+              "Output{\"Ref\":\"S301B5E29875\"}": {
+                "id": "Output{\"Ref\":\"S301B5E29875\"}",
+                "path": "InvoiceApp/Exports/Output{\"Ref\":\"S301B5E29875\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"QueueName\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"QueueName\"]}",
+                "path": "InvoiceApp/Exports/Output{\"Fn::GetAtt\":[\"S3InvoiceQueueE519D3D7\",\"QueueName\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.12.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.90"
             }
           }
         },
@@ -1236,6 +1683,50 @@
                                       "Resource": {
                                         "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
                                       }
+                                    },
+                                    {
+                                      "Action": [
+                                        "sqs:ReceiveMessage",
+                                        "sqs:ChangeMessageVisibility",
+                                        "sqs:GetQueueUrl",
+                                        "sqs:DeleteMessage",
+                                        "sqs:GetQueueAttributes"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS3InvoiceQueueE519D3D7Arn20AE8F4C"
+                                      }
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject",
+                                        "s3:PutObjectLegalHold",
+                                        "s3:PutObjectRetention",
+                                        "s3:PutObjectTagging",
+                                        "s3:PutObjectVersionTagging",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS301B5E29875Arn9BC58F18"
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS301B5E29875Arn9BC58F18"
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
                                     }
                                   ],
                                   "Version": "2012-10-17"
@@ -1274,7 +1765,7 @@
                         "containerDefinitions": [
                           {
                             "essential": true,
-                            "image": "matheusjagi/aws-learn:1.8.0",
+                            "image": "matheusjagi/aws-learn:1.9.0",
                             "name": "aws_learn01",
                             "portMappings": [
                               {
@@ -1300,6 +1791,12 @@
                                 "value": "us-east-1"
                               },
                               {
+                                "name": "AWS_S3_BUCKET_INVOICE_NAME",
+                                "value": {
+                                  "Fn::ImportValue": "InvoiceApp:ExportsOutputRefS301B5E29875A20E1A8B"
+                                }
+                              },
+                              {
                                 "name": "SPRING_DATASOURCE_URL",
                                 "value": {
                                   "Fn::Join": [
@@ -1323,6 +1820,12 @@
                               {
                                 "name": "SPRING_DATASOURCE_USERNAME",
                                 "value": "admin"
+                              },
+                              {
+                                "name": "AWS_SQS_QUEUE_INVOICE_EVENTS_NAME",
+                                "value": {
+                                  "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS3InvoiceQueueE519D3D7QueueName520A5A63"
+                                }
                               },
                               {
                                 "name": "AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN",
@@ -1602,8 +2105,8 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
                               "aws:cdk:cloudformation:props": {
-                                "maxCapacity": 2,
-                                "minCapacity": 1,
+                                "maxCapacity": 4,
+                                "minCapacity": 2,
                                 "resourceId": {
                                   "Fn::Join": [
                                     "",
@@ -1730,7 +2233,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
@@ -1796,6 +2299,206 @@
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.12.0"
                 }
+              },
+              "ReadScaling": {
+                "id": "ReadScaling",
+                "path": "Dynamodb/ProductEventsDynamodb/ReadScaling",
+                "children": {
+                  "Target": {
+                    "id": "Target",
+                    "path": "Dynamodb/ProductEventsDynamodb/ReadScaling/Target",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Dynamodb/ProductEventsDynamodb/ReadScaling/Target/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
+                          "aws:cdk:cloudformation:props": {
+                            "maxCapacity": 4,
+                            "minCapacity": 1,
+                            "resourceId": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "table/",
+                                  {
+                                    "Ref": "ProductEventsDynamodbF063E04E"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":iam::",
+                                  {
+                                    "Ref": "AWS::AccountId"
+                                  },
+                                  ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+                                ]
+                              ]
+                            },
+                            "scalableDimension": "dynamodb:table:ReadCapacityUnits",
+                            "serviceNamespace": "dynamodb"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalableTarget",
+                          "version": "2.12.0"
+                        }
+                      },
+                      "Tracking": {
+                        "id": "Tracking",
+                        "path": "Dynamodb/ProductEventsDynamodb/ReadScaling/Target/Tracking",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Dynamodb/ProductEventsDynamodb/ReadScaling/Target/Tracking/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyName": "DynamodbProductEventsDynamodbReadScalingTargetTrackingBB5018B1",
+                                "policyType": "TargetTrackingScaling",
+                                "scalingTargetId": {
+                                  "Ref": "ProductEventsDynamodbReadScalingTargetAC6250F9"
+                                },
+                                "targetTrackingScalingPolicyConfiguration": {
+                                  "predefinedMetricSpecification": {
+                                    "predefinedMetricType": "DynamoDBReadCapacityUtilization"
+                                  },
+                                  "scaleInCooldown": 30,
+                                  "scaleOutCooldown": 30,
+                                  "targetValue": 50
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalingPolicy",
+                              "version": "2.12.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.TargetTrackingScalingPolicy",
+                          "version": "2.12.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_applicationautoscaling.ScalableTarget",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_applicationautoscaling.BaseScalableAttribute",
+                  "version": "2.12.0"
+                }
+              },
+              "WriteScaling": {
+                "id": "WriteScaling",
+                "path": "Dynamodb/ProductEventsDynamodb/WriteScaling",
+                "children": {
+                  "Target": {
+                    "id": "Target",
+                    "path": "Dynamodb/ProductEventsDynamodb/WriteScaling/Target",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Dynamodb/ProductEventsDynamodb/WriteScaling/Target/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
+                          "aws:cdk:cloudformation:props": {
+                            "maxCapacity": 4,
+                            "minCapacity": 1,
+                            "resourceId": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "table/",
+                                  {
+                                    "Ref": "ProductEventsDynamodbF063E04E"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":iam::",
+                                  {
+                                    "Ref": "AWS::AccountId"
+                                  },
+                                  ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+                                ]
+                              ]
+                            },
+                            "scalableDimension": "dynamodb:table:WriteCapacityUnits",
+                            "serviceNamespace": "dynamodb"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalableTarget",
+                          "version": "2.12.0"
+                        }
+                      },
+                      "Tracking": {
+                        "id": "Tracking",
+                        "path": "Dynamodb/ProductEventsDynamodb/WriteScaling/Target/Tracking",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Dynamodb/ProductEventsDynamodb/WriteScaling/Target/Tracking/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyName": "DynamodbProductEventsDynamodbWriteScalingTargetTracking626C95FA",
+                                "policyType": "TargetTrackingScaling",
+                                "scalingTargetId": {
+                                  "Ref": "ProductEventsDynamodbWriteScalingTargetA1EA8FD4"
+                                },
+                                "targetTrackingScalingPolicyConfiguration": {
+                                  "predefinedMetricSpecification": {
+                                    "predefinedMetricType": "DynamoDBWriteCapacityUtilization"
+                                  },
+                                  "scaleInCooldown": 30,
+                                  "scaleOutCooldown": 30,
+                                  "targetValue": 50
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalingPolicy",
+                              "version": "2.12.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.TargetTrackingScalingPolicy",
+                          "version": "2.12.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_applicationautoscaling.ScalableTarget",
+                      "version": "2.12.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_applicationautoscaling.BaseScalableAttribute",
+                  "version": "2.12.0"
+                }
               }
             },
             "constructInfo": {
@@ -1826,7 +2529,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           },
           "Exports": {
@@ -1844,7 +2547,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
@@ -2355,7 +3058,7 @@
                         "containerDefinitions": [
                           {
                             "essential": true,
-                            "image": "matheusjagi/aws_learn_consumer:1.3.0",
+                            "image": "matheusjagi/aws_learn_consumer:1.6.0",
                             "name": "aws_learn02",
                             "portMappings": [
                               {
@@ -2661,8 +3364,8 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
                               "aws:cdk:cloudformation:props": {
-                                "maxCapacity": 2,
-                                "minCapacity": 1,
+                                "maxCapacity": 4,
+                                "minCapacity": 2,
                                 "resourceId": {
                                   "Fn::Join": [
                                     "",
@@ -2789,7 +3492,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.0.82"
+              "version": "10.0.90"
             }
           }
         },
