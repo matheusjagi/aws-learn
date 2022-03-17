@@ -166,6 +166,50 @@
               "Resource": {
                 "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
               }
+            },
+            {
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS3InvoiceQueueE519D3D7Arn20AE8F4C"
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS301B5E29875Arn9BC58F18"
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS301B5E29875Arn9BC58F18"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
@@ -190,6 +234,12 @@
               {
                 "Name": "AWS_REGION",
                 "Value": "us-east-1"
+              },
+              {
+                "Name": "AWS_S3_BUCKET_INVOICE_NAME",
+                "Value": {
+                  "Fn::ImportValue": "InvoiceApp:ExportsOutputRefS301B5E29875A20E1A8B"
+                }
               },
               {
                 "Name": "SPRING_DATASOURCE_URL",
@@ -217,6 +267,12 @@
                 "Value": "admin"
               },
               {
+                "Name": "AWS_SQS_QUEUE_INVOICE_EVENTS_NAME",
+                "Value": {
+                  "Fn::ImportValue": "InvoiceApp:ExportsOutputFnGetAttS3InvoiceQueueE519D3D7QueueName520A5A63"
+                }
+              },
+              {
                 "Name": "AWS_SNS_TOPIC_PRODUCT_EVENTS_ARN",
                 "Value": {
                   "Fn::ImportValue": "Sns:ExportsOutputRefProductEventsTopic2164919A1EE23678"
@@ -224,7 +280,7 @@
               }
             ],
             "Essential": true,
-            "Image": "matheusjagi/aws-learn:1.8.0",
+            "Image": "matheusjagi/aws-learn:1.9.0",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -425,8 +481,8 @@
     "ALB01ServiceTaskCountTarget4149107A": {
       "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
       "Properties": {
-        "MaxCapacity": 2,
-        "MinCapacity": 1,
+        "MaxCapacity": 4,
+        "MinCapacity": 2,
         "ResourceId": {
           "Fn::Join": [
             "",

@@ -2,6 +2,7 @@ com/myorg/CursoAwsCdkStack.class
 com/myorg/Service01Stack.class
 com/myorg/RdsStack.class
 com/myorg/Service02Stack.class
+com/myorg/InvoiceAppStack.class
 com/myorg/CursoAwsCdkApp.class
 com/myorg/ClusterStack.class
 com/myorg/VpcStack.class
